@@ -15,3 +15,6 @@
 ### ide files ###
 .idea/
 ### ide files ###
+###> lexik/jwt-authentication-bundle ###
+/config/jwt/*.pem
+###< lexik/jwt-authentication-bundle ###
