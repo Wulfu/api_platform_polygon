@@ -10,8 +10,6 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-        main:
-            anonymous: true
         api:
             pattern: ^/api
             stateless: true
@@ -25,5 +23,5 @@ security:
                     - lexik_jwt_authentication.jwt_token_authenticator
 
     access_control:
-        - { path: ^/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
+#        - { path: ^/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api,       roles: IS_AUTHENTICATED_ANONYMOUSLY }
