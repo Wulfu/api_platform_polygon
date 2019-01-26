@@ -39,6 +39,7 @@ class Comment implements AuthoredEntityInterface, PublishedDateEntityInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"get-comment-with-author"})
      */
     private $id;
 

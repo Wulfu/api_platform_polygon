@@ -47,6 +47,16 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class User implements UserInterface
 {
+    const ROLE_COMMENTATOR = 'ROLE_COMMENTATOR';
+    const ROLE_WRITTER = 'ROLE_WRITTER';
+    const ROLE_EDITOR = 'ROLE_EDITOR';
+    const ROLE_ADMIN = 'ROLE_ADMIN';
+    const ROLE_SUPERADMIN = 'ROLE_SUPERADMIN';
+
+    const DEFAULT_ROLES = [
+        self::ROLE_COMMENTATOR
+    ];
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -57,7 +67,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"get", "post", "get-comment-with-author"})
+     * @Groups({"get", "post", "get-comment-with-author", "get-blog-post-with-author"})
      * @Assert\NotBlank()
      * @Assert\Length(min=6, max=255)
      */
@@ -86,8 +96,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"get", "put", "post", "get-comment-with-author"})
-     * @Groups({"get"})
+     * @Groups({"get", "put", "post", "get-comment-with-author", "get-blog-post-with-author"})
      * @Assert\NotBlank()
      * @Assert\Length(min=5, max=255)
      */
@@ -95,7 +104,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"put", "post", "get-comment-with-author"})
+     * @Groups({"put", "post", "get-comment-with-author", "get-blog-post-with-author"})
      * @Assert\NotBlank()
      * @Assert\Email()
      * @Assert\Length(min=6, max=255)
@@ -114,10 +123,16 @@ class User implements UserInterface
      */
     private $comments;
 
+    /**
+     * @ORM\Column(type="simple_array")
+     */
+    private $roles = self::ROLE_COMMENTATOR;
+
     public function __construct()
     {
         $this->posts = new ArrayCollection();
         $this->comments = new ArrayCollection();
+        $this->roles = self::DEFAULT_ROLES;
     }
 
     public function getId(): ?int
@@ -204,9 +219,14 @@ class User implements UserInterface
      *
      * @return (Role|string)[] The user roles
      */
-    public function getRoles()
+    public function getRoles(): array
     {
-        return ['ROLE_USER'];
+        return $this->roles;
+    }
+
+    public function setRoles(array $roles)
+    {
+        $this->roles = $roles;
     }
 
     /**
